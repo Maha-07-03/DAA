@@ -1,4 +1,4 @@
-//Quick sort with time complexity 
+//QUICK SORT WITH TIME COMPLEXITY 
 #include <stdio.h>
 #include <conio.h>  
 #include <time.h>   
