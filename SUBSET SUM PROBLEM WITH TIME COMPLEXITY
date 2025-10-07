@@ -1,4 +1,4 @@
-//N QUEENS WITH TIME COMPLEXITY 
+//SUBSET SUM PROBLEM WITH TIME COMPLEXITY  
 #include <stdio.h>
 #include<time.h>
 void findSubset(int set[], int subset[], int n, int index, int target, int currentSum) {
