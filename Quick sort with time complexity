@@ -1,0 +1,53 @@
+//Quick sort with time complexity 
+#include <stdio.h>
+#include <conio.h>  
+#include <time.h>   
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+int partition(int arr[], int low, int high) {
+    int j;
+    int pivot = arr[high]; 
+    int i = (low - 1);
+    for (j = low; j <= high - 1; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pIndex = partition(arr, low, high);
+        quickSort(arr, low, pIndex - 1);
+        quickSort(arr, pIndex + 1, high);
+    }
+}
+void printArray(int arr[], int size) {
+    int i;
+    for (i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+void main() {
+    int arr[] = {10, 7, 8, 9, 1, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    clock_t start_time, end_time;
+    float total_time;
+    clrscr();  
+    printf("Original array: ");
+    printArray(arr, n);
+    start_time = clock();
+    quickSort(arr, 0, n - 1);
+    end_time = clock();
+    total_time = (float)(end_time - start_time) / CLK_TCK;
+    printf("Sorted array: ");
+    printArray(arr, n);
+    printf("\nTime taken to sort the array: %f seconds\n", total_time);
+    getch();  
+}
