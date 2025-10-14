@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>  
+int maximum(int a, int b) {
+    return (a > b) ? a : b;
+}
+int knapsack(int W, int wt[], int val[], int n) {
+    int i, w;
+    int **knap;
+    knap = (int **)malloc((n + 1) * sizeof(int *));
+    if (knap == NULL) {
+        perror("Failed to allocate memory for knap rows");
+        exit(EXIT_FAILURE);
+    }
+    for (i = 0; i <= n; i++) {
+        knap[i] = (int *)malloc((W + 1) * sizeof(int));
+        if (knap[i] == NULL) {
+            perror("Failed to allocate memory for knap columns");
+            for (int k = 0; k < i; ++k) {
+                free(knap[k]);
+            }
+            free(knap);
+            exit(EXIT_FAILURE);
+        }
+    }
+    for (i = 0; i <= n; i++) {
+        for (w = 0; w <= W; w++) {
+            if (i == 0 || w == 0) {
+                knap[i][w] = 0;
+            }
+            else if (wt[i - 1] <= w) {
+                knap[i][w] = maximum(val[i - 1] + knap[i - 1][w - wt[i - 1]], knap[i - 1][w]);
+            }
+            else {
+                knap[i][w] = knap[i - 1][w];
+            }
+        }
+    }
+    int max_value = knap[n][W];
+    for (i = 0; i <= n; i++) {
+        free(knap[i]);
+    }
+    free(knap);
+    return max_value;
+}
+int main() {
+    int val[] = {60, 100, 120};
+    int wt[] = {10, 20, 30};    
+    int W = 50;            
+    clock_t start_time, end_time;
+    double cpu_time_used;        
+    int n = sizeof(val) / sizeof(val[0]);
+    start_time = clock();
+    int result = knapsack(W, wt, val, n);
+    end_time = clock();
+    cpu_time_used = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("The maximum value that can be put in the knapsack is: %d\n", result);
+    printf("Execution time: %f seconds\n", cpu_time_used);
+    return 0;
+}
